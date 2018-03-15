@@ -7,11 +7,8 @@ namespace Calculations
     public partial class Calculator : Component
     {
         
-        public int VarLoopValue;
-        public double VarTotalCalculations;
-        public ConcurrentQueue<int> _list;
+        private ConcurrentQueue<int> _list;
 
-        public delegate void Calc();
         public delegate void CalculateCompleteHandler(double totalCalculations);
         public event CalculateCompleteHandler CalculateComplete;
         
@@ -30,26 +27,31 @@ namespace Calculations
             _list.Enqueue(value);
         }
 
+        private void CalculateExpression(int varLoopValue)
+        {
+
+            int varX;
+            var varTotalAsOfNow = 0;
+            for (varX = 1; varX <= varLoopValue; varX++)
+            {
+                for (var varY = 1; varY <= 500; varY++)
+                {
+
+                    varTotalAsOfNow++;
+                }
+            }
+            CalculateComplete(varTotalAsOfNow);
+        }
+
         private void Calculate()
         {
             while (true)
             {
-                if (_list.TryDequeue(out VarLoopValue))
+
+                var varLoopValue = 0;
+                if (_list.TryDequeue(out varLoopValue))
                 {
-                    int varX;
-                    double varTotalAsOfNow = 0;
-                    for (varX = 1; varX <= VarLoopValue; varX++)
-                    {
-                        for (var varY = 1; varY <= 500; varY++)
-                        {
-                            lock (this)
-                            {
-                                VarTotalCalculations += 1;
-                                varTotalAsOfNow = VarTotalCalculations;
-                            }
-                        }
-                    }
-                    CalculateComplete(varTotalAsOfNow);
+                    CalculateExpression(varLoopValue);
                 }
             }
         }
