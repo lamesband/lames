@@ -1,21 +1,24 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Threading;
 
 namespace Calculations
 {
-    public partial class Calculator : Component
+    public class Calculator : IDisposable
     {
-        
+
         private ConcurrentQueue<int> _list;
+        private bool exit;
 
         public delegate void CalculateCompleteHandler(double totalCalculations);
+
         public event CalculateCompleteHandler CalculateComplete;
-        
+
 
         public Calculator()
         {
-            InitializeComponent();
+
             _list = new ConcurrentQueue<int>();
 
             var CalculateThread = new Thread(Calculate);
@@ -45,7 +48,7 @@ namespace Calculations
 
         private void Calculate()
         {
-            while (true)
+            while (!exit)
             {
 
                 var varLoopValue = 0;
@@ -56,10 +59,10 @@ namespace Calculations
             }
         }
 
-        public Calculator(IContainer container)
+        public void Dispose()
         {
-            container.Add(this);
-            InitializeComponent();
+            exit = true;
         }
+
     }
 }
