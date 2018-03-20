@@ -8,7 +8,7 @@ namespace Calculations
         private readonly Calculator _calculator1;
         public delegate void ClHandler(double calculations);
 
-        public void CaclulateHandler(double calculations)
+        public void CalculateOuterHandler(double calculations)
         {
             btnCalculate.Enabled = true;
             lblCalculate.Text = calculations.ToString();
@@ -35,7 +35,12 @@ namespace Calculations
         
         private void CalculateHandler(double calculations)
         {
-            BeginInvoke(new ClHandler(CaclulateHandler), calculations);
+            BeginInvoke(new ClHandler(CalculateOuterHandler), calculations);
+        }
+
+        private void FrmCalculations_Closed(object sender, EventArgs e)
+        {
+            _calculator1.Dispose();
         }
     }
 }

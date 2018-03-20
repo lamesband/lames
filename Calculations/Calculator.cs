@@ -25,7 +25,6 @@ namespace Calculations
 
             var CalculateThread = new Thread(Calculate);
             CalculateThread.Start();
-            //Monitor.Enter(_mutex);
 
 
         }
@@ -37,8 +36,6 @@ namespace Calculations
             {
                 _list.Add(value);
                 Monitor.Pulse(_mutex);
-                
-
             }
             
 
@@ -69,8 +66,6 @@ namespace Calculations
 
                 lock (_mutex)
                 {
-                    
-                    
                     Monitor.Wait(_mutex);
                     if (_list.Count > 0)
                     {
@@ -85,7 +80,10 @@ namespace Calculations
         public void Dispose()
         {
             exit = true;
+            lock (_mutex)
+            {
+                Monitor.Pulse(_mutex);
+            }
         }
-
     }
 }

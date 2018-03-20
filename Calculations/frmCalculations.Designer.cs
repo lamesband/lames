@@ -33,10 +33,10 @@
             this.lblCalculate = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // btnRunLoops
+            // btnCalculate
             // 
             this.btnCalculate.Location = new System.Drawing.Point(79, 38);
-            this.btnCalculate.Name = "btnRunLoops";
+            this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(102, 23);
             this.btnCalculate.TabIndex = 8;
             this.btnCalculate.Text = "Вычислить";
@@ -69,6 +69,7 @@
             this.Controls.Add(this.btnCalculate);
             this.Name = "FrmCalculations";
             this.Text = "Form1";
+            this.Closed += new System.EventHandler(this.FrmCalculations_Closed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
