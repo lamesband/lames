@@ -50,18 +50,23 @@ namespace Calculations
         private void Calculate()
         {
             
+
             while (!exit)
             {
 
+                var id = 0;
                 lock (_mutex)
                 {
                     Monitor.Wait(_mutex);
+                    if (_list.Count > 0)
+                    {
+                        id = _list[0];
+                        _list.RemoveAt(0);
+
+                    }
                 }
-                if (_list.Count > 0)
-                {
-                    CalculateExpression(_list[0]);
-                    _list.RemoveAt(0);
-                }
+
+                CalculateExpression(id);
 
 
             }
