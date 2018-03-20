@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Calculations
 {
     public class Calculator : IDisposable
     {
 
-        private ConcurrentQueue<int> _list;
+        static  object _mutex = new object();
+        private List<int> _list = new List<int>();
         private bool exit;
 
         public delegate void CalculateCompleteHandler(double totalCalculations);
@@ -19,15 +22,26 @@ namespace Calculations
         public Calculator()
         {
 
-            _list = new ConcurrentQueue<int>();
 
             var CalculateThread = new Thread(Calculate);
             CalculateThread.Start();
+            //Monitor.Enter(_mutex);
+
+
         }
 
         public void StartCalculate(int value)
         {
-            _list.Enqueue(value);
+
+            lock (_mutex)
+            {
+                _list.Add(value);
+                Monitor.Pulse(_mutex);
+                
+
+            }
+            
+
         }
 
         private void CalculateExpression(int varLoopValue)
@@ -43,19 +57,28 @@ namespace Calculations
                     varTotalAsOfNow++;
                 }
             }
+            
             CalculateComplete(varTotalAsOfNow);
         }
 
         private void Calculate()
         {
+            
             while (!exit)
             {
 
-                var varLoopValue = 0;
-                if (_list.TryDequeue(out varLoopValue))
+                lock (_mutex)
                 {
-                    CalculateExpression(varLoopValue);
+                    
+                    
+                    Monitor.Wait(_mutex);
+                    if (_list.Count > 0)
+                    {
+                        CalculateExpression(_list[0]);
+                        _list.RemoveAt(0);
+                    }
                 }
+
             }
         }
 
