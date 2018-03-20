@@ -27,7 +27,7 @@ namespace Calculations
         private void btnCalculate_Click(object sender, EventArgs e)
         {
             
-            btnCalculate.Enabled = false;
+            //btnCalculate.Enabled = false;
             lblCalculate.Text = "Looping";
             _calculator1.StartCalculate(int.Parse(txtValue.Text));
         }

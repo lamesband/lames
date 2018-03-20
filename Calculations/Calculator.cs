@@ -43,19 +43,8 @@ namespace Calculations
 
         private void CalculateExpression(int varLoopValue)
         {
-
-            int varX;
-            var varTotalAsOfNow = 0;
-            for (varX = 1; varX <= varLoopValue; varX++)
-            {
-                for (var varY = 1; varY <= 500; varY++)
-                {
-
-                    varTotalAsOfNow++;
-                }
-            }
-            
-            CalculateComplete(varTotalAsOfNow);
+            Thread.Sleep(varLoopValue);
+            CalculateComplete(varLoopValue);
         }
 
         private void Calculate()
@@ -67,12 +56,13 @@ namespace Calculations
                 lock (_mutex)
                 {
                     Monitor.Wait(_mutex);
-                    if (_list.Count > 0)
-                    {
-                        CalculateExpression(_list[0]);
-                        _list.RemoveAt(0);
-                    }
                 }
+                if (_list.Count > 0)
+                {
+                    CalculateExpression(_list[0]);
+                    _list.RemoveAt(0);
+                }
+
 
             }
         }
