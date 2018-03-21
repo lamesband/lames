@@ -12,7 +12,7 @@ namespace Calculations
 
         static  object _mutex = new object();
         private List<int> _list = new List<int>();
-        private bool exit;
+        private int exit;
 
         public delegate void CalculateCompleteHandler(double totalCalculations);
 
@@ -51,19 +51,18 @@ namespace Calculations
         {
             
 
-            while (!exit)
+            while (exit==0)
             {
 
                 var id = 0;
                 lock (_mutex)
                 {
-                    Monitor.Wait(_mutex);
-                    if (_list.Count > 0)
-                    {
-                        id = _list[0];
-                        _list.RemoveAt(0);
-
-                    }
+                    if (_list.Count == 0)
+                        Monitor.Wait(_mutex);
+                    if (exit == 1)
+                        break;
+                    id = _list[0];
+                    _list.RemoveAt(0);
                 }
 
                 CalculateExpression(id);
@@ -74,7 +73,7 @@ namespace Calculations
 
         public void Dispose()
         {
-            exit = true;
+            Interlocked.Increment(ref exit);
             lock (_mutex)
             {
                 Monitor.Pulse(_mutex);
