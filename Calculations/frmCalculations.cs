@@ -9,6 +9,7 @@ namespace Calculations
         private readonly Calculator _calculator1;
         public delegate void ClHandler(decimal calculations);
 
+        
         public void CalculateOuterHandler(decimal calculations)
         {
             btnCalculate.Enabled = true;

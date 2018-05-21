@@ -12,9 +12,9 @@ namespace Calculations
             _rhs = rightValue;
         }
 
-        decimal IOperation.Calculate()
+        void IOperation.Calculate(Calculator.CalculateCompleteHandler handler)
         {
-            return _lhs * _rhs;
+            handler.Invoke(_lhs * _rhs);
         }
     }
 }

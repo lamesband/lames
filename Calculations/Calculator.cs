@@ -16,17 +16,13 @@ namespace Calculations
 
         public delegate void CalculateCompleteHandler(decimal totalCalculations);
 
-        public event CalculateCompleteHandler CalculateComplete;
+        public  event CalculateCompleteHandler CalculateComplete;
 
 
         public Calculator()
         {
-
-
             var CalculateThread = new Thread(Calculate);
             CalculateThread.Start();
-
-
         }
 
         public void StartCalculate(IOperation operation)
@@ -41,12 +37,13 @@ namespace Calculations
 
         }
 
+        public  void CompleteCalculate(decimal result)
+        {
+            CalculateComplete(result);
+        }
         private void CalculateExpression(IOperation operation)
         {
-            int varLoopValue = 2000;
-            var result = operation.Calculate();
-            Thread.Sleep(varLoopValue);
-            CalculateComplete(result);
+            operation.Calculate(CompleteCalculate);
         }
 
         private void Calculate()

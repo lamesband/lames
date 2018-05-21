@@ -11,17 +11,24 @@ namespace Calculations
 
         public OperationDivide(decimal leftValue, decimal rightValue)
         {
+            
             _lhs = leftValue;
             _rhs = rightValue;
         }
 
 
-        decimal IOperation.Calculate()
+        void IOperation.Calculate(Calculator.CalculateCompleteHandler handler)
         {
+            //Calculator.CalculateCompleteHandler complete= new Calculator.CalculateCompleteHandler(Calculator.CalculateCompleteHandler);
             if (_rhs != 0)
-                return _lhs / _rhs;
-            
+            {
+                handler.Invoke(_lhs / _rhs);
+                //BeginInvoke(new FrmCalculations.ClHandler(CalculateOperationComplete), );
+            }
+
+            else
             throw new Exception("divide by zero");
         }
+
     }
 }
