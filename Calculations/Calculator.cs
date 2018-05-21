@@ -16,7 +16,7 @@ namespace Calculations
 
         public delegate void CalculateCompleteHandler(decimal totalCalculations);
 
-        public  event CalculateCompleteHandler CalculateComplete;
+        //public  event CalculateCompleteHandler CalculateComplete;
 
 
         public Calculator()
@@ -39,11 +39,11 @@ namespace Calculations
 
         public  void CompleteCalculate(decimal result)
         {
-            CalculateComplete(result);
+        //    CalculateComplete(result);
         }
         private void CalculateExpression(IOperation operation)
         {
-            operation.Calculate(CompleteCalculate);
+            operation.Calculate();
         }
 
         private void Calculate()

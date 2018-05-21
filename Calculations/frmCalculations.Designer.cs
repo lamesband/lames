@@ -55,6 +55,7 @@
             this.lTxtValue.Name = "lTxtValue";
             this.lTxtValue.Size = new System.Drawing.Size(92, 20);
             this.lTxtValue.TabIndex = 9;
+            this.lTxtValue.Text = "10";
             // 
             // result
             // 
@@ -71,6 +72,7 @@
             this.rTxtValue.Name = "rTxtValue";
             this.rTxtValue.Size = new System.Drawing.Size(92, 20);
             this.rTxtValue.TabIndex = 11;
+            this.rTxtValue.Text = "2";
             // 
             // operation
             // 
@@ -79,6 +81,7 @@
             this.operation.Name = "operation";
             this.operation.Size = new System.Drawing.Size(92, 20);
             this.operation.TabIndex = 12;
+            this.operation.Text = "/";
             // 
             // button1
             // 

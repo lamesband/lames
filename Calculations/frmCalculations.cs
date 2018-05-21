@@ -21,8 +21,6 @@ namespace Calculations
         {
             InitializeComponent();
             _calculator1 = new Calculator();
-            _calculator1.CalculateComplete += CalculateHandler;
-         
         }
 
         private KeyValuePair<string,  IOperation> GetOperation()
@@ -45,16 +43,16 @@ namespace Calculations
                     {
                         return new KeyValuePair<string, IOperation>("Деление на 0", null);
                     }
-                    operation = new OperationDivide(lValue, rValue);
+                    operation = new OperationDivide(lValue, rValue, CalculateHandler);
                     break;
                 case "*":
-                    operation = new OperationMultiply(lValue, rValue);
+                    operation = new OperationMultiply(lValue, rValue, CalculateHandler);
                     break;
                 case "+":
-                    operation = new OperationPlus(lValue, rValue);
+                    operation = new OperationPlus(lValue, rValue, CalculateHandler);
                     break;
                 default:
-                    operation = new OperationMinus(lValue, rValue);
+                    operation = new OperationMinus(lValue, rValue, CalculateHandler);
                     break;
             }
 
@@ -69,7 +67,6 @@ namespace Calculations
 
             if (string.IsNullOrEmpty(operation.Key))
             {
-                //btnCalculate.Enabled = false;
                 result.Text = "Looping";
                 _calculator1.StartCalculate(operation.Value);
             }

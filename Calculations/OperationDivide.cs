@@ -8,21 +8,22 @@ namespace Calculations
         
         private readonly decimal _lhs;
         private readonly decimal _rhs;
-
-        public OperationDivide(decimal leftValue, decimal rightValue)
+        private Calculator.CalculateCompleteHandler _handler;
+        public OperationDivide(decimal leftValue, decimal rightValue, Calculator.CalculateCompleteHandler handler)
         {
-            
+
+            _handler = handler;
             _lhs = leftValue;
             _rhs = rightValue;
         }
 
 
-        void IOperation.Calculate(Calculator.CalculateCompleteHandler handler)
+        void IOperation.Calculate()
         {
             //Calculator.CalculateCompleteHandler complete= new Calculator.CalculateCompleteHandler(Calculator.CalculateCompleteHandler);
             if (_rhs != 0)
             {
-                handler.Invoke(_lhs / _rhs);
+                _handler.Invoke(_lhs / _rhs);
                 //BeginInvoke(new FrmCalculations.ClHandler(CalculateOperationComplete), );
             }
 

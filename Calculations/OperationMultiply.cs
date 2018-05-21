@@ -6,15 +6,22 @@ namespace Calculations
 
         private readonly decimal _lhs;
         private readonly decimal _rhs;
-        public OperationMultiply(decimal leftValue, decimal rightValue)
+        private Calculator.CalculateCompleteHandler _handler;
+        public OperationMultiply(decimal leftValue, decimal rightValue, Calculator.CalculateCompleteHandler handler)
         {
+
+            _handler = handler;
             _lhs = leftValue;
             _rhs = rightValue;
         }
 
-        void IOperation.Calculate(Calculator.CalculateCompleteHandler handler)
+
+        void IOperation.Calculate()
         {
-            handler.Invoke(_lhs * _rhs);
+            _handler.Invoke(_lhs * _rhs);
+
+
         }
+
     }
 }
