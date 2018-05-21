@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OperationMultiply.cs" />
+    <Compile Include="OperationMinus.cs" />
+    <Compile Include="OperationDivide.cs" />
+    <Compile Include="OperationPlus.cs" />
+    <Compile Include="IOperation.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="frmCalculations.cs">
       <SubType>Form</SubType>

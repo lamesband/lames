@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Calculations
@@ -6,12 +7,12 @@ namespace Calculations
     public partial class FrmCalculations : Form
     {
         private readonly Calculator _calculator1;
-        public delegate void ClHandler(double calculations);
+        public delegate void ClHandler(decimal calculations);
 
-        public void CalculateOuterHandler(double calculations)
+        public void CalculateOuterHandler(decimal calculations)
         {
             btnCalculate.Enabled = true;
-            lblCalculate.Text = calculations.ToString();
+            result.Text = calculations.ToString();
 
         }
 
@@ -23,17 +24,60 @@ namespace Calculations
          
         }
 
-        
-        private void btnCalculate_Click(object sender, EventArgs e)
+        private KeyValuePair<string,  IOperation> GetOperation()
         {
-            
-            //btnCalculate.Enabled = false;
-            lblCalculate.Text = "Looping";
-            _calculator1.StartCalculate(int.Parse(txtValue.Text));
+
+            IOperation operation;
+            decimal lValue;
+            decimal rValue;
+            if (!decimal.TryParse(lTxtValue.Text, out lValue))
+            return  new KeyValuePair<string, IOperation>("Левый операнд неверный", null); 
+            if (!decimal.TryParse(rTxtValue.Text, out rValue))
+                return new KeyValuePair<string, IOperation>("Правый операнд неверный", null);
+
+            switch (this.operation.Text)
+            {
+                case "":
+                    return new KeyValuePair<string, IOperation>("Выбрать операцию", null);
+                case "/":
+                    if (rValue == 0)
+                    {
+                        return new KeyValuePair<string, IOperation>("Деление на 0", null);
+                    }
+                    operation = new OperationDivide(lValue, rValue);
+                    break;
+                case "*":
+                    operation = new OperationMultiply(lValue, rValue);
+                    break;
+                case "+":
+                    operation = new OperationPlus(lValue, rValue);
+                    break;
+                default:
+                    operation = new OperationMinus(lValue, rValue);
+                    break;
+            }
+
+            return new KeyValuePair<string, IOperation>("", operation);
         }
 
-        
-        private void CalculateHandler(double calculations)
+        private void btnCalculate_Click(object sender, EventArgs e)
+        {
+
+
+            var operation = GetOperation();
+
+            if (string.IsNullOrEmpty(operation.Key))
+            {
+                //btnCalculate.Enabled = false;
+                result.Text = "Looping";
+                _calculator1.StartCalculate(operation.Value);
+            }
+            else
+                result.Text = operation.Key;
+        }
+
+
+        private void CalculateHandler(decimal calculations)
         {
             BeginInvoke(new ClHandler(CalculateOuterHandler), calculations);
         }
@@ -42,5 +86,27 @@ namespace Calculations
         {
             _calculator1.Dispose();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            operation.Text = "+";
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            operation.Text = "-";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            operation.Text = "/";
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            operation.Text = "*";
+        }
+
+        
     }
 }
