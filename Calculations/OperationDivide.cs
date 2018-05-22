@@ -2,7 +2,7 @@
 
 namespace Calculations
 {
-    public class OperationDivide : IOperation
+/*    public class OperationDivide : IOperation
     {
 
         
@@ -31,5 +31,5 @@ namespace Calculations
             throw new Exception("divide by zero");
         }
 
-    }
+    }*/
 }

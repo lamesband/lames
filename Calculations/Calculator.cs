@@ -11,13 +11,9 @@ namespace Calculations
     {
 
         static  object _mutex = new object();
-        private List<IOperation> _list = new List<IOperation>();
+        private List<Operation> _list = new List<Operation>();
         private int exit;
-
-        public delegate void CalculateCompleteHandler(decimal totalCalculations);
-
-        //public  event CalculateCompleteHandler CalculateComplete;
-
+        
 
         public Calculator()
         {
@@ -25,7 +21,7 @@ namespace Calculations
             CalculateThread.Start();
         }
 
-        public void StartCalculate(IOperation operation)
+        public void StartCalculate(Operation operation)
         {
 
             lock (_mutex)
@@ -37,13 +33,9 @@ namespace Calculations
 
         }
 
-        public  void CompleteCalculate(decimal result)
+        private void CalculateExpression(Operation operation)
         {
-        //    CalculateComplete(result);
-        }
-        private void CalculateExpression(IOperation operation)
-        {
-            operation.Calculate();
+            operation.calculateOperation(operation);
         }
 
         private void Calculate()
@@ -53,7 +45,7 @@ namespace Calculations
             while (exit==0)
             {
 
-                IOperation id;
+                Operation id;
                 lock (_mutex)
                 {
                     if (_list.Count == 0)

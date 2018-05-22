@@ -1,15 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
 namespace Calculations
 {
+    public class Operation
+    {
+        public decimal lValue;
+        public decimal rValue;
+        public FrmCalculations.CalculateOperation calculateOperation;
+        public FrmCalculations.ClHandler clHandler;
+
+        public void SetCalculateOperation(FrmCalculations.CalculateOperation handle)
+        {
+            calculateOperation = handle;
+        }
+    }
+
+
     public partial class FrmCalculations : Form
     {
         private readonly Calculator _calculator1;
         public delegate void ClHandler(decimal calculations);
+        public  delegate void CalculateOperation(Operation oper);
 
-        
         public void CalculateOuterHandler(decimal calculations)
         {
             btnCalculate.Enabled = true;
@@ -23,40 +38,54 @@ namespace Calculations
             _calculator1 = new Calculator();
         }
 
-        private KeyValuePair<string,  IOperation> GetOperation()
+        private KeyValuePair<string, Operation> GetOperation()
         {
 
-            IOperation operation;
+            
             decimal lValue;
             decimal rValue;
             if (!decimal.TryParse(lTxtValue.Text, out lValue))
-            return  new KeyValuePair<string, IOperation>("Левый операнд неверный", null); 
+            return  new KeyValuePair<string, Operation>("Левый операнд неверный", null); 
             if (!decimal.TryParse(rTxtValue.Text, out rValue))
-                return new KeyValuePair<string, IOperation>("Правый операнд неверный", null);
+                return new KeyValuePair<string, Operation>("Правый операнд неверный", null);
+            var operation = new
+                Operation()
+                {
+                    clHandler = CalculateHandler,
+                    lValue = lValue,
+                    rValue = rValue
+                };
 
             switch (this.operation.Text)
             {
                 case "":
-                    return new KeyValuePair<string, IOperation>("Выбрать операцию", null);
+                    return new KeyValuePair<string, Operation>("Выбрать операцию", null);
                 case "/":
                     if (rValue == 0)
                     {
-                        return new KeyValuePair<string, IOperation>("Деление на 0", null);
+
+                        return new KeyValuePair<string, Operation>("Деление на 0", null);
                     }
-                    operation = new OperationDivide(lValue, rValue, CalculateHandler);
+                    operation.SetCalculateOperation((oper) => oper.clHandler(oper.lValue / oper.rValue));
+                    
+                    
+                    //operation = new OperationDivide(lValue, rValue, CalculateHandler);
                     break;
                 case "*":
-                    operation = new OperationMultiply(lValue, rValue, CalculateHandler);
+                    operation.SetCalculateOperation((oper) => oper.clHandler(oper.lValue * oper.rValue));
+                    //operation = new OperationMultiply(lValue, rValue, CalculateHandler);
                     break;
                 case "+":
-                    operation = new OperationPlus(lValue, rValue, CalculateHandler);
+                    operation.SetCalculateOperation((oper) => oper.clHandler(oper.lValue + oper.rValue));
+                    //operation = new OperationPlus(lValue, rValue, CalculateHandler);
                     break;
                 default:
-                    operation = new OperationMinus(lValue, rValue, CalculateHandler);
+                    operation.SetCalculateOperation((oper) => oper.clHandler(oper.lValue - oper.rValue));
+                    //operation = new OperationMinus(lValue, rValue, CalculateHandler);
                     break;
             }
 
-            return new KeyValuePair<string, IOperation>("", operation);
+            return new KeyValuePair<string, Operation>("", operation);
         }
 
         private void btnCalculate_Click(object sender, EventArgs e)

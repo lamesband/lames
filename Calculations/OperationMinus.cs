@@ -1,9 +1,9 @@
 ﻿namespace Calculations
 {
-    public class OperationMinus : IOperation
+    /*public class OperationMinus : IOperation
     {
 
-
+        
         private readonly decimal _lhs;
         private readonly decimal _rhs;
         private Calculator.CalculateCompleteHandler _handler;
@@ -23,5 +23,5 @@
 
         }
 
-    }
+    }*/
 }

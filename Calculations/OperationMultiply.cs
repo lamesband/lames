@@ -1,7 +1,7 @@
 ﻿
 namespace Calculations
 {
-    public class OperationMultiply : IOperation
+/*    public class OperationMultiply : IOperation
     {
 
         private readonly decimal _lhs;
@@ -23,5 +23,5 @@ namespace Calculations
 
         }
 
-    }
+    }*/
 }

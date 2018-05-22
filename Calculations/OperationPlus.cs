@@ -1,6 +1,6 @@
 ﻿namespace Calculations
 {
-    public class OperationPlus : IOperation
+/*    public class OperationPlus : IOperation
     {
 
         private readonly decimal _lhs;
@@ -22,5 +22,5 @@
 
         }
 
-    }
+    }*/
 }
